@@ -53,11 +53,12 @@ class Env
 
     private static function loadFile($filePath = null): void
     {
+        require_once __DIR__ . '/../common.php';
         $filePath = $filePath ?? FOOZ79_ROOT_DIR . '.env';
         if (file_exists($filePath)) {
             $env = parse_ini_file($filePath, true);
             foreach ($env as $key => $val) {
-                $prefix = static::ENV_PREFIX . strtoupper($key);
+                $prefix = self::ENV_PREFIX . strtoupper($key);
                 if (is_array($val)) {
                     foreach ($val as $k => $v) {
                         $item = $prefix . '_' . strtoupper($k);
