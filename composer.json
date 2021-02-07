@@ -1,0 +1,31 @@
+{
+    "name": "fooz79/traits",
+    "description": "fooz79 feature traits",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "fooz",
+        "fooz79",
+        "traits"
+    ],
+    "authors": [
+        {
+            "name": "Alvis Zhang",
+            "email": "alvis@1979s.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "FooZ79\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    }
+}
