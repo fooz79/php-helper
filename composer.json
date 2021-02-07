@@ -18,7 +18,8 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "FooZ79\\Traits\\": "src/Traits/"
+            "FooZ79\\Traits\\": "src/Traits/",
+            "FooZ79\\Statics\\": "src/Statics/"
         }
     },
     "config": {
