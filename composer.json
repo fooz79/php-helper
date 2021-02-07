@@ -16,6 +16,9 @@
         }
     ],
     "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.3"
+    },
     "autoload": {
         "psr-4": {
             "FooZ79\\Traits\\": "src/Traits/",
