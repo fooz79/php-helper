@@ -1,13 +1,13 @@
 {
-    "name": "fooz79/traits",
-    "description": "fooz79 feature traits",
+    "name": "fooz79/helper",
+    "description": "辛辛苦苦收集（东拼西凑）借鉴（抄）来的常用工具集合",
     "type": "library",
     "license": "MIT",
     "keywords": [
         "php",
         "fooz",
         "fooz79",
-        "traits"
+        "helper"
     ],
     "authors": [
         {
@@ -16,12 +16,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {
-        "php": ">=7.1"
-    },
     "autoload": {
         "psr-4": {
-            "FooZ79\\": "src/"
+            "FooZ79\\Traits\\": "src/Traits/"
         }
     },
     "config": {

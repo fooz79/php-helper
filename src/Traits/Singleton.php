@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of FooZ79.
  *
  * @link     https://gitee.com/FooZ/traits
  * @license  https://gitee.com/FooZ/traits/blob/master/LICENSE
  */
-
-declare(strict_types=1);
 
 namespace FooZ79\Traits;
 
