@@ -13,13 +13,23 @@ namespace FooZ79\Traits;
 
 trait Singleton
 {
-    private static $instance;
+    private static $instance = null;
 
-    public static function getInstance(...$args)
+    public static function getSingleton(...$args)
     {
-        if (!isset(self::$instance)) {
+        if (is_null(self::$instance)) {
             self::$instance = new static(...$args);
         }
         return self::$instance;
+    }
+
+    public function __clone()
+    {
+        throw new \Exception('Cannot clone a singleton');
+    }
+
+    public function __sleep()
+    {
+        throw new \Exception('Cannot serialize a singleton');
     }
 }
