@@ -23,7 +23,10 @@
         "psr-4": {
             "FooZ79\\Traits\\": "src/Traits/",
             "FooZ79\\Statics\\": "src/Statics/"
-        }
+        },
+        "files": [
+            "src/common.php"
+        ]
     },
     "config": {
         "sort-packages": true,
