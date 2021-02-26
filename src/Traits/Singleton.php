@@ -5,22 +5,28 @@ declare(strict_types=1);
 /**
  * This file is part of FooZ79.
  *
- * @link     https://gitee.com/FooZ/traits
- * @license  https://gitee.com/FooZ/traits/blob/master/LICENSE
+ * @link     https://github.com/fooz79/php-helper
+ * @license  https://github.com/fooz79/php-helper/blob/master/LICENSE
  */
 
 namespace FooZ79\Traits;
 
 trait Singleton
 {
-    private static $instance = null;
+    protected static $instance = [];
 
     public static function getSingleton(...$args)
     {
-        if (is_null(self::$instance)) {
-            self::$instance = new static(...$args);
+        $className = md5(static::class);
+        if (isset(self::$instance[$className]) == false) {
+            self::$instance[$className] = new static(...$args);
         }
-        return self::$instance;
+        return self::$instance[$className];
+    }
+
+    public static function releaseSingleton()
+    {
+        unset(self::$instance[md5(static::class)]);
     }
 
     public function __clone()
