@@ -3,3 +3,7 @@
 - v0.1.5
 
 trait Singleton 可在抽象类中 use 后在不同的实体类中使用 getSingleton() 时获取各自的单例
+
+- v0.1.6
+
+增加 get_caller_class()
