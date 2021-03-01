@@ -15,27 +15,35 @@ trait Singleton
 {
     protected static $instance = [];
 
-    public static function getSingleton(...$args)
+    protected static function getSingleton(array $args)
     {
         $className = md5(static::class);
-        if (isset(self::$instance[$className]) == false) {
-            self::$instance[$className] = new static(...$args);
+        static::$instance[$className] = static::$instance[$className] ?? null;
+        if (static::$instance[$className] instanceof static) {
+            return static::$instance[$className];
+        } else {
+            if ((new \ReflectionMethod(static::class, '__construct'))->isPublic()) {
+                $className = (new \ReflectionClass(static::class))->getShortName();
+                throw new \Exception($className . '::__construct() can\'t be public');
+            } else {
+                self::$instance[$className] = new static(...$args);
+                return static::$instance[$className];
+            }
         }
-        return self::$instance[$className];
     }
 
-    public static function releaseSingleton()
+    public function __destruct()
     {
-        unset(self::$instance[md5(static::class)]);
+        unset(static::$instance[md5(static::class)]);
     }
 
     public function __clone()
     {
-        throw new \Exception('Cannot clone a singleton');
+        throw new \Exception('Can\'t clone a singleton');
     }
 
     public function __sleep()
     {
-        throw new \Exception('Cannot serialize a singleton');
+        throw new \Exception('Can\'t serialize a singleton');
     }
 }
