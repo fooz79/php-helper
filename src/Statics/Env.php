@@ -10,6 +10,14 @@ class Env
 
     private static $loaded = null;
 
+    /**
+     * 从 .env 文件中获取配置项
+     *
+     * @deprecated 推荐使用带类型的 get 方法
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
     public static function get(string $name, $default = null)
     {
         if (is_null(self::$loaded)) self::loadFile();

@@ -51,15 +51,18 @@ if (!function_exists('get_caller_class')) {
             $file = $trace[0]['file'];
             $class = $trace[1]['class'];
             for ($i = 1; $i <= $count; ++$i) {
-                if ($file != $trace[$i + 1]['file']) {
-                    if ($class != $trace[$i]['class']) {
-                        if ($shortName) {
-                            return (new \ReflectionClass($trace[$i]['class']))->getShortName();;
+                $nextFile = $trace[$i + 1]['file'] ?? false;
+                if ($nextFile) {
+                    if ($file != $trace[$i + 1]['file']) {
+                        if ($class != $trace[$i]['class']) {
+                            if ($shortName) {
+                                return (new \ReflectionClass($trace[$i]['class']))->getShortName();
+                            } else {
+                                return $trace[$i]['class'];
+                            }
                         } else {
-                            return $trace[$i]['class'];
+                            $class = $trace[$i]['class'];
                         }
-                    } else {
-                        $class = $trace[$i]['class'];
                     }
                 }
             }
