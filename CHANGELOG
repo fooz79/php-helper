@@ -11,3 +11,7 @@ trait Singleton 可在抽象类中 use 后在不同的实体类中使用 getSing
 - v0.1.7
 
 更新 Env 对象，支持 loading 时加入二级配置来覆盖主配置 .env.{name}
+
+- v0.1.8
+
+增加 Config，读取 /config 目录下的 php 配置文件

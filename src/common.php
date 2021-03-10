@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use FooZ79\Statics\Config;
 use FooZ79\Statics\Env;
 
 /**
@@ -68,5 +69,12 @@ if (!function_exists('get_caller_class')) {
             }
         }
         return null;
+    }
+}
+
+if (!function_exists('config')) {
+    function config(string $name)
+    {
+        return Config::get($name);
     }
 }
