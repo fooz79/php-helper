@@ -6,23 +6,13 @@ namespace FooZ79\Statics;
 
 class Env
 {
-    private const ENV_PREFIX = 'FOOZ79_';
+    private const ENV_PREFIX = '_FOOZ79';
 
-    private static $loaded = null;
-
-    /**
-     * 从 .env 文件中获取配置项
-     *
-     * @deprecated 推荐使用带类型的 get 方法
-     * @param string $name
-     * @param mixed $default
-     * @return mixed
-     */
     public static function get(string $name, $default = null)
     {
-        if (is_null(self::$loaded)) self::loadFile();
+        if (!isset($_ENV[self::ENV_PREFIX])) self::loadFile();
 
-        $result = getenv(static::ENV_PREFIX . strtoupper(str_replace('.', '_', $name)));
+        $result = $_ENV[self::ENV_PREFIX][strtoupper(str_replace('.', '_', $name))];
         if (false !== $result) {
             if ('false' === $result) {
                 $result = false;
@@ -34,47 +24,71 @@ class Env
         return $default;
     }
 
-    public static function getString(string $name, $default = null): string
+    public static function getString(string $name, string $default = ''): string
     {
         return strval(self::get($name, $default));
     }
 
-    public static function getInt(string $name, $default = null): int
+    public static function getInt(string $name, int $default = 0): int
     {
         return intval(self::get($name, $default));
     }
 
-    public static function getFloat(string $name, $default = null, int $precision = 4): float
+    public static function getFloat(string $name, float $default = 0, int $precision = 4): float
     {
         return round(self::get($name, $default), $precision);
     }
 
-    public static function getArray(string $name, $default = null, string $separator = ',', array $replace_pairs = null): array
+    public static function getBool(string $name, bool $default = false): bool
+    {
+        return boolval(self::get($name, $default));
+    }
+
+    public static function getArray(string $name, array $default = [], string $separator = ',', array $replace_pairs = null): array
     {
         if (is_null($replace_pairs)) {
             $replace_pairs = [
                 ' ' => ''
             ];
         }
-        return explode($separator, strtr(self::getString($name, $default), $replace_pairs));
+        return explode($separator, strtr(self::get($name, $default), $replace_pairs));
     }
 
-    private static function loadFile($filePath = null): void
+    public static function set(string $name, $value)
+    {
+        $k = strtoupper(str_replace('.', '_', $name));
+        $_ENV[self::ENV_PREFIX][$k] = $value;
+    }
+
+    public static function loadFile($filePath = null, string $withName = null): void
     {
         require_once __DIR__ . '/../common.php';
         $filePath = $filePath ?? FOOZ79_ROOT_DIR . '.env';
-        if (file_exists($filePath)) {
-            $env = parse_ini_file($filePath, true);
-            foreach ($env as $key => $val) {
-                $prefix = self::ENV_PREFIX . strtoupper($key);
-                if (is_array($val)) {
-                    foreach ($val as $k => $v) {
-                        $item = $prefix . '_' . strtoupper($k);
-                        putenv("$item=$v");
-                    }
-                } else {
-                    putenv("$prefix=$val");
+        if (file_exists($filePath)) { // parse .env
+            self::parse_file($filePath);
+            if ($withName) { // parse .env.${withName}
+                $filePath .= '.' . $_ENV[self::ENV_PREFIX]['APP_ENV'];
+                if (file_exists($filePath)) {
+                    self::parse_file($filePath);
                 }
+            }
+        } else {
+            throw new \Exception('env file: ' . $filePath . ' not exist.');
+        }
+    }
+
+    private static function parse_file(string $filePath): void
+    {
+        $ini_array = parse_ini_file($filePath, true);
+        foreach ($ini_array as $key => $val) {
+            $key = strtoupper($key);
+            if (is_array($val)) {
+                foreach ($val as $k => $v) {
+                    $k = $key . '_' . $k;
+                    self::set($k, $v);
+                }
+            } else {
+                self::set($key, $val);
             }
         }
     }
