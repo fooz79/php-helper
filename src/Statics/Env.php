@@ -12,7 +12,7 @@ class Env
     {
         if (!isset($_ENV[self::ENV_PREFIX])) self::loadFile();
 
-        $result = $_ENV[self::ENV_PREFIX][strtoupper(str_replace('.', '_', $name))];
+        $result = $_ENV[self::ENV_PREFIX][strtoupper(str_replace('.', '_', $name))] ?? false;
         if (false !== $result) {
             if ('false' === $result) {
                 $result = false;
